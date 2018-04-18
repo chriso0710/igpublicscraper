@@ -1,40 +1,72 @@
 require "spec_helper"
 require "instagram_user"
+require "pp"
 
 RSpec.describe InstagramUser do
   before do
-    @user_name = ENV['INSTAGRAM_USER_NAME']
-    @password  = ENV['INSTAGRAM_PASSWORD']
-    @cli = InstagramUser.new(
-      user_name: @user_name,
-      password: @password,
-      selenium: false
-    )
+    @client = InstagramUser.new
   end
 
   it "has a version number" do
     expect(InstagramUser::VERSION).not_to be nil
   end
 
-  it "get follows" do
-    follows = @cli.get_follows(@user_name)
-    expect(follows.include?('instagram')).to eq true
+  it "hashtag suche mit details #hamburg, 5 mal" do
+    5.times do
+        posts = @client.get_recent_posts_by_tag('hamburg')
+        @client.get_details(posts)
+        posts.each do |p|
+            puts p.print if !p.owner
+        end
+    end
   end
 
-  it "get followers 1" do
-    follows = @cli.get_followers(@user_name)
-    expect(follows.include?('instagram')).to eq false
+  it "hashtag suche ohne model #hamburg" do
+    tags = @client.get_medias_by_tag('hamburg')
+    expect(tags['recent'].count > 0).to eq true
+    expect(tags['popularity'].count > 0).to eq true
+    puts "recent #{tags['recent'].count}"
+    puts "popular #{tags['popularity'].count}"
   end
 
-  it "get followers 2" do
-    follows = @cli.get_followers(@user_name)
-    expect(follows.include?('yudsuzuk')).to eq true
+  it "hashtag suche mit model details #hamburg" do
+    posts = @client.get_recent_posts_by_tag('hamburg')
+    expect(posts.count > 0).to eq true
+    @client.get_details(posts)
+    posts.each do |p|
+        puts p.print if !p.owner
+    end
   end
 
-  it "get tags" do
-    tags = @cli.get_medias_by_tag('プログラマー')
+  it "hashtag suche mit model details #fitness" do
+    posts = @client.get_recent_posts_by_tag('fitness')
+    expect(posts.count > 0).to eq true
+    @client.get_details(posts)
+    posts.each do |p|
+        puts p.print if !p.owner
+    end
+  end
+
+  it "hashtag suche ohne model mit umlaut #münchen" do
+    tags = @client.get_medias_by_tag('münchen')
     expect(tags['recent'].count > 0).to eq true
     expect(tags['popularity'].count > 0).to eq true
   end
+
+  it "hashtag suche mit model #video" do
+    # @client = InstagramUser.new(:debug => true)
+    posts = @client.get_recent_posts_by_tag('video')
+    expect(posts.count > 0).to eq true
+    @client.get_details(posts)
+  end
+
+  it "hashtag suche ohne model, paging 3 mal #münchen" do
+    tags = @client.get_medias_by_tag('münchen', 3)
+    puts "recent #{tags['recent'].count}"
+    puts "popular #{tags['popularity'].count}"
+    expect(tags['recent'].count > 100).to eq true
+    expect(tags['popularity'].count > 0).to eq true
+  end
+
 end
 
