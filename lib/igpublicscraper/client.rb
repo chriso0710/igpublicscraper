@@ -58,16 +58,12 @@ module IGPublicScraper
 
         def get_recent_posts_by_tag(tag_name)
             tags = get_medias_by_tag(tag_name)
-            posts = []
-            tags['recent'].each { |t| posts << IGPublicScraper::Post.new(t) }
-            posts
+            tags['recent'].map { |t| IGPublicScraper::Post.new(t) }
         end
 
         def get_popular_posts_by_tag(tag_name)
             tags = get_medias_by_tag(tag_name)
-            posts = []
-            tags['popularity'].each { |t| posts << IGPublicScraper::Post.new(t) }
-            posts
+            tags['popularity'].map { |t| IGPublicScraper::Post.new(t) }
         end
 
         def get_medias_by_location(location_id, req_num = 1)
@@ -91,9 +87,7 @@ module IGPublicScraper
 
         def get_posts_by_location(location_id)
             locations = get_medias_by_location(location_id)
-            posts = []
-            locations.each { |t| posts << IGPublicScraper::Post.new(t) }
-            posts
+            locations.map { |t| IGPublicScraper::Post.new(t) }
         end
 
         def shortcode_request(post)
