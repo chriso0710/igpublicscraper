@@ -1,17 +1,27 @@
-module InstagramUser
+module IGPublicScraper
 
-    class Post
+    class Base
+
+        def id
+            @h["id"]
+        end
+
+        def full_hash
+            @h
+        end
+
+    end
+
+    class Post < Base
+
+        GETFROM = "node"
 
         def initialize(ighash)
-            @h = ighash["node"]
+            @h = ighash[GETFROM]
         end
 
         def shortcode
             @h["shortcode"]
-        end
-
-        def id
-            @h["id"]
         end
 
         def text
@@ -60,27 +70,25 @@ module InstagramUser
         end
 
         def print
-            "#{id} #{shortcode} #{owner} #{video?} #{Time.at(timestamp)} #{url} #{text_short}"
+            "#{id} #{shortcode} #{owner.username if owner} #{video?} #{Time.at(timestamp)} #{url} #{text_short}"
         end
 
     end
 
-    class Shortcode
+    class Shortcode < Base
+
+        GETFROM = "graphql"
 
         def initialize(ighash)
-            @h = ighash["graphql"]["shortcode_media"]
+            @h = ighash[GETFROM]["shortcode_media"]
         end
 
         def shortcode
             @h["shortcode"]
         end
 
-        def id
-            @h["id"]
-        end
-
         def owner
-            @owner ||= InstagramUser::Owner.new(@h)
+            @owner ||= IGPublicScraper::Owner.new(@h)
         end
 
         def video_url
@@ -89,14 +97,12 @@ module InstagramUser
 
     end
 
-    class Owner
+    class Owner < Base
+
+        GETFROM = "owner"
 
         def initialize(ighash)
-            @h = ighash["owner"]
-        end
-
-        def id
-            @h["id"]
+            @h = ighash[GETFROM]
         end
 
         def profile_pic_url
