@@ -10,6 +10,12 @@ RSpec.describe IGPublicScraper do
     expect(IGPublicScraper::VERSION).not_to be nil
   end
 
+  it "searches hashtag as hash, not found" do
+    tags = @client.get_medias_by_tag('skdkskjsdsdsd')
+    expect(tags['recent'].count == 0).to eq true
+    expect(tags['popularity'].count == 0).to eq true
+  end
+
   it "searches recent hashtag with details, returns post model, #hamburg, 3 times" do
     3.times do
       posts = @client.get_recent_posts_by_tag('hamburg')
@@ -47,7 +53,7 @@ RSpec.describe IGPublicScraper do
     expect(post.details).to be_an_instance_of(IGPublicScraper::Shortcode)
     expect(post.url).to match(/cdninstagram.com/)
     expect(post.timestamp).to_not be_nil
-    expect(post.text).to match(/video/i)
+    expect(post.text).to_not be_nil
     expect(post.id).to_not be_nil
     expect(post.shortcode).to_not be_nil
   end

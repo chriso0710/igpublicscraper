@@ -16,10 +16,11 @@ module IGPublicScraper
         def initialize(options = {})
             @options = options
             Typhoeus::Config.user_agent = AGENT
+            @hydra = Typhoeus::Hydra.new(max_concurrency: @options[:max_concurrency] || 20)
         end
 
         def debug(response)
-            puts "#{response.effective_url} #{response.code}"
+            puts "#{response.effective_url} #{response.code} #{response.return_code}"
             if @options[:debug] 
                 json = JSON.parse(response.body) 
                 puts JSON.pretty_generate(json) 
@@ -96,13 +97,12 @@ module IGPublicScraper
         end
 
         def get_details(posts)
-            hydra = Typhoeus::Hydra.new
             requests = posts.map do |p|
                 request = shortcode_request(p)
-                hydra.queue(request)
+                @hydra.queue(request)
                 request
             end
-            hydra.run
+            @hydra.run
 
             responses = requests.map { |r|
                 debug(r.response)

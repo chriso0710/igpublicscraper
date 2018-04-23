@@ -13,6 +13,7 @@ This gem is inspired from [Instagram Data Scraping from Public API](https://medi
 * This library exclusively makes request to public Instagram pages. There is no official Instagram API or Instagram user involved. 
 * This library will not get any private media of Instagram users.
 * Do not use this gem for commercial projects. The public Instagram endpoints used are uncertain and may change any time. 
+* The number of results may vary as this is not an official endpoint.
 * Instagram's public pages implement rate limiting, so you may get back http status code 429, telling you to wait a few minutes before making more requests.
 
 ## Installation
