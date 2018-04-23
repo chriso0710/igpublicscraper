@@ -16,7 +16,6 @@ module IGPublicScraper
         def initialize(options = {})
             @options = options
             Typhoeus::Config.user_agent = AGENT
-            @hydra = Typhoeus::Hydra.new(max_concurrency: @options[:max_concurrency] || 20)
         end
 
         def debug(response)
@@ -97,12 +96,13 @@ module IGPublicScraper
         end
 
         def get_details(posts)
+            hydra = Typhoeus::Hydra.new(max_concurrency: @options[:max_concurrency] || 20)
             requests = posts.map do |p|
                 request = shortcode_request(p)
-                @hydra.queue(request)
+                hydra.queue(request)
                 request
             end
-            @hydra.run
+            hydra.run
 
             responses = requests.map { |r|
                 debug(r.response)
