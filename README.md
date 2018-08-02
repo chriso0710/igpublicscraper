@@ -33,9 +33,9 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-# New client
+# new client
 client = IGPublicScraper.new
-# New client in debug mode, pretty prints response JSON body 
+# new client in debug mode, pretty prints response JSON body 
 client = IGPublicScraper.new(:debug => true)
 
 # get media for the specified tag
@@ -44,28 +44,32 @@ res = client.get_medias_by_tag('hamburg')
 
 # get media for the specified location id (Hamburg), page 3 times
 res = client.get_medias_by_location('213110159', 3)
-# => Array of media hash
+# => array of media hash
 
 # get recents posts for the specified tag
 posts = client.get_recent_posts_by_tag('video')
-# => Array of Posts
+# => array of posts
 
 # get popular posts for the specified tag
 posts = client.get_popular_posts_by_tag('fitness')
-# => Array of Posts
+# => array of posts
 # get details like owner and video from shortcode pages
 client.get_details(posts)
-# => Array of Posts with shortcode details
+# => array of posts with shortcode details
 # print fields
 post = posts.first
 puts "#{post.id} #{post.shortcode} #{post.owner.username if owner} #{post.video?} #{Time.at(post.timestamp)} #{post.url} #{post.text_short}"
 
 # get posts for the specified location id (New York)
 posts = client.get_posts_by_location('212988663')
-# => Array of Posts
+# => array of posts
 # get details like owner and video from shortcode page
 client.get_details(posts)
-# => Array of Posts with shortcode details
+# => array of posts with shortcode details
+
+# get single post for shortcode with details
+post = client.get_post_by_shortcode('Bc2miZShxDY')
+# => single post
 ```
 
 See more examples in spec directory.
