@@ -10,6 +10,20 @@ RSpec.describe IGPublicScraper do
     expect(IGPublicScraper::VERSION).not_to be nil
   end
 
+  it "gets post from shortcode (Bc2miZShxDY)" do
+    post = @client.get_post_by_shortcode('Bc2miZShxDY')
+    expect(post).to be_an_instance_of(IGPublicScraper::Post)
+    expect(post.owner).to be_an_instance_of(IGPublicScraper::Owner)
+    expect(post.owner.username).to_not be_nil
+    expect(post.owner.profile_pic_url).to match(/cdninstagram.com/)
+    expect(post.details).to be_an_instance_of(IGPublicScraper::Shortcode)
+    expect(post.url).to match(/cdninstagram.com/)
+    expect(post.timestamp).to_not be_nil
+    expect(post.text).to_not be_nil
+    expect(post.id).to_not be_nil
+    expect(post.shortcode).to_not be_nil
+  end
+
   it "searches hashtag as hash, not found" do
     tags = @client.get_medias_by_tag('skdkskjsdsdsd')
     expect(tags['recent'].count == 0).to eq true

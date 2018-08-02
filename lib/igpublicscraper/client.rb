@@ -16,6 +16,7 @@ module IGPublicScraper
         def initialize(options = {})
             @options = options
             Typhoeus::Config.user_agent = AGENT
+            # Typhoeus::Config.verbose = true
         end
 
         def debug(response)
@@ -31,7 +32,7 @@ module IGPublicScraper
             begin
                 JSON.parse(json)
                 return true
-            rescue JSON::ParserError => e
+            rescue JSON::ParserError
                 return false
             end
         end
@@ -90,6 +91,19 @@ module IGPublicScraper
             locations.map { |t| IGPublicScraper::Post.new(t) }
         end
 
+        def get_post_by_shortcode(short)
+            url = URI.encode(format SHORTCODE_URL, short)
+            response = Typhoeus.get(url)
+            debug(response)
+            json = JSON.parse(response.body) if valid_json?(response.body)
+            if response.code == 200 && json
+                post = IGPublicScraper::Post.new(json["graphql"], "shortcode_media")
+                shortcode = IGPublicScraper::Shortcode.new(json)
+                post.details = shortcode
+            end
+            post
+        end
+
         def shortcode_request(post)
             url = URI.encode(format SHORTCODE_URL, post.shortcode)
             Typhoeus::Request.new(url)    
@@ -104,7 +118,7 @@ module IGPublicScraper
             end
             hydra.run
 
-            responses = requests.map { |r|
+            requests.map do |r|
                 debug(r.response)
                 json = JSON.parse(r.response.body) if valid_json?(r.response.body)
                 if r.response.code == 200 && json
@@ -113,7 +127,7 @@ module IGPublicScraper
                         post.details = shortcode
                     end
                 end
-            }
+            end
             posts
         end
 

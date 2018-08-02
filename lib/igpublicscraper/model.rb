@@ -14,10 +14,8 @@ module IGPublicScraper
 
     class Post < Base
 
-        GETFROM = "node"
-
-        def initialize(ighash)
-            @h = ighash[GETFROM]
+        def initialize(ighash, getfrom = "node")
+            @h = ighash[getfrom]
         end
 
         def shortcode
