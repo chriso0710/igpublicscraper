@@ -25,7 +25,7 @@ RSpec.describe IGPublicScraper do
   end
 
   it "searches hashtag as hash, not found" do
-    tags = @client.get_medias_by_tag('skdkskjsdsdsd')
+    tags = @client.get_medias_by_tag('some_tag_which_cannot_be_found')
     expect(tags['recent'].count == 0).to eq true
     expect(tags['popularity'].count == 0).to eq true
   end

@@ -18,13 +18,13 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'typhoeus'
+  spec.add_dependency 'excon'
   spec.add_development_dependency "bundler", "~> 1.15"
   spec.add_development_dependency "rake"
-  spec.add_development_dependency 'pry-byebug'
+  spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "guard-rspec"
   spec.add_development_dependency "guard"
   spec.add_development_dependency "terminal-notifier"
   spec.add_development_dependency "terminal-notifier-guard"
-  spec.add_development_dependency 'ffi', '1.9.18'
+  spec.add_development_dependency "ffi", "1.9.18"
 end
