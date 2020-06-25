@@ -15,8 +15,10 @@ module IGPublicScraper
     class Client
 
         def initialize(options = {})
-            default_options = { :debug => false, 
-                                :idempotent => true, 
+            # ENV:
+            # EXCON_DEBUG=true
+            # HTTP_PROXY=http://proxy
+            default_options = { :idempotent => true, 
                                 :persistent => true, 
                                 :headers => { 'User-Agent' => USER_AGENT } }
             @options = default_options.merge(options)
