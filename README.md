@@ -3,7 +3,7 @@
 Simple client for public Instagram hashtag and location searches.
 It uses available JSON data from Instagram's public pages. 
 It needs no approved application, no API key and no Instagram user or login. 
-It does not rely on browser automation (Selenium etc.) so it is fast. It makes parallel requests with the fantastic Typhoeus Hydra. It sets the user agent string for Typhoeus to a common browser.
+It does not rely on browser automation (Selenium etc.) so it is fast. It makes requests using Excon. It sets the user agent string for Excon to a common browser.
 
 This gem is inspired from [Instagram Data Scraping from Public API](https://medium.com/@h4t0n/instagram-data-scraping-550c5f2fb6f1) and originally based on the [Instagram_User](https://github.com/YuzuruS/instagram_user) gem, but heavily modified to avoid Instagram login and browser automation.
 
@@ -14,7 +14,7 @@ This gem is inspired from [Instagram Data Scraping from Public API](https://medi
 * This library will not get any private media of Instagram users.
 * Do not use this gem for commercial projects. The public Instagram endpoints used are uncertain and may change any time. 
 * The number of results may vary as this is not an official endpoint.
-* Instagram's public pages implement rate limiting, so you may get back http status code 429, telling you to wait a few minutes before making more requests.
+* Instagrams public pages implement rate limiting, so you may get back http status code 429, telling you to wait a few minutes before making more requests.
 
 ## Installation
 

@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["co@hayvalley.io"]
 
   spec.summary       = "Client for public Instagram hashtag and location searches"
-  spec.description   = "Uses json data from Instagram's public pages. Needs no API key and no browser automation. Makes parallel requests with Typhoeus Hydra."
+  spec.description   = "Uses json data from Instagram's public pages. Needs no API key and no browser automation."
   spec.homepage      = "https://github.com/chriso0710/igpublicscraper"
   spec.license       = "MIT"
 
@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "guard"
   spec.add_development_dependency "terminal-notifier"
   spec.add_development_dependency "terminal-notifier-guard"
-  spec.add_development_dependency "ffi", "1.9.18"
+  spec.add_development_dependency "ffi", ">= 1.9.24"
 end
